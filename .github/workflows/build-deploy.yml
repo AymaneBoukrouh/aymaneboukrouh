@@ -47,5 +47,5 @@ jobs:
       run: ssh root@aymaneboukrouh.com 'docker pull ghcr.io/aymaneboukrouh/aymaneboukrouh:latest'
       
     - name: Run Container Image
-      run: ssh root@aymaneboukrouh.com 'docker run ghcr.io/aymaneboukrouh/aymaneboukrouh:latest -d'
+      run: ssh root@aymaneboukrouh.com 'docker run -d -p 8000:8000 ghcr.io/aymaneboukrouh/aymaneboukrouh:latest'
       
