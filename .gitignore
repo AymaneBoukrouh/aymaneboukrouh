@@ -11,3 +11,6 @@ __pycache__/
 
 # db
 db.sqlite3
+
+# docker
+docker-compose.yml
