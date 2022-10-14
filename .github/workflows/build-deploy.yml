@@ -33,3 +33,12 @@ jobs:
       
     - name: Push Image to GitHub Container Registry
       run: docker push ghcr.io/aymaneboukrouh/aymaneboukrouh:latest
+      
+    - name: Setup SSH
+      uses: MrSquaare/ssh-setup-action@v2
+      with:
+        host: aymaneboukrouh.com
+        private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+    
+    - name: Test
+      run: ssh root@aymaneboukrouh 'touch /home/aymane/test'
