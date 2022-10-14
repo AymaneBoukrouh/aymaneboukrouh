@@ -29,7 +29,7 @@ jobs:
       run: docker build . --file Dockerfile --tag aymaneboukrouh:latest
       
     - name: Log into GitHub Container Registry
-      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login https://ghcr.io -u ${{ github.actor }} --pasword-stdin
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
       
     - name: Push Image to GitHub Container Registry
       run: docker push ghcr.io/${{ github.respository_owner }}/aymaneboukrouh:latest
