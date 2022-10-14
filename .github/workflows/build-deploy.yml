@@ -41,4 +41,4 @@ jobs:
         private-key: ${{ secrets.SSH_PRIVATE_KEY }}
     
     - name: Test
-      run: ssh root@aymaneboukrouh 'touch /home/aymane/test'
+      run: ssh root@aymaneboukrouh.com 'touch /home/aymane/test_root'
