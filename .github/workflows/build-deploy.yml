@@ -32,4 +32,4 @@ jobs:
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
       
     - name: Push Image to GitHub Container Registry
-      run: docker push ghcr.io/${{ github.respository_owner }}/aymaneboukrouh:latest
+      run: docker push ghcr.io/${{ github.repository_owner }}/aymaneboukrouh:latest
