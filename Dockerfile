@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir --upgrade -r requirements.txt
 COPY . .
 
 # run server
-CMD ["gunicorn", "aymaneboukrouh.asgi:application", "-k", "uvicorn.workers.UvicornWorker"]
+CMD ["gunicorn", "aymaneboukrouh.asgi:application", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]
