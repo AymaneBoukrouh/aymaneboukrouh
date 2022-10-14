@@ -40,5 +40,12 @@ jobs:
         host: aymaneboukrouh.com
         private-key: ${{ secrets.SSH_PRIVATE_KEY }}
     
-    - name: Test
-      run: ssh root@aymaneboukrouh.com 'touch /home/aymane/test_root'
+    - name: Log into GitHub Container Registry on DigitalOcean
+      run: ssh root@aymaneboukrouh.com 'echo "${{ secrets.GITHUB_TOKEN }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin'
+      
+    - name: Pull Container Image
+      run: ssh root@aymaneboukrouh.com 'docker pull ghcr.io/aymaneboukrouh/aymaneboukrouh:latest'
+      
+    - name: Run Container Image
+      run: ssh root@aymaneboukrouh.com 'docker run ghcr.io/aymaneboukrouh/aymaneboukrouh:latest -d'
+      
