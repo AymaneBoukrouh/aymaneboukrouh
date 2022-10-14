@@ -1,0 +1,35 @@
+name: Build and Deploy Container to DigitalOcean
+
+on:
+  push:
+    branches: ["master"]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+        
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Run Tests
+      run: |
+        python manage.py test
+    
+    - name: Build Container Image
+      run: docker build . --file Dockerfile --tag aymaneboukrouh:latest
+      
+    - name: Log into GitHub Container Registry
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login https://ghcr.io -u ${{ github.actor }} --pasword-stdin
+      
+    - name: Push Image to GitHub Container Registry
+      run: docker push ghcr.io/${{ github.respository_owner }}/aymaneboukrouh:latest
