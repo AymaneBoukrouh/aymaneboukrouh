@@ -1,0 +1,37 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block body %}
+    <header class="masthead" style="background-image:url('{% static 'img/home-bg.jpg' %}');">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 mx-auto position-relative">
+                    <div class="site-heading">
+                        <h1>Clean Blog</h1><span class="subheading">A Blog Theme by Start Bootstrap</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-lg-8">
+                {% for post in posts %}
+                {% if not forloop.first %}<hr>{% endif %}
+                <div class="post-preview"><a href="#">
+                        <h2 class="post-title">{{ post.title }}</h2>
+                    </a>
+                    <p class="post-meta">
+                        Posted on {{ post.created_at|date:'F d, Y' }}
+                        {% if post.updated_at|date:'F d, Y' != post.created_at|date:'F d, Y' %}
+                        <br>Last updated on {{ post.updated_at }}
+                        {% endif %}
+                    </p>
+                </div>
+                {% endfor %}
+ 
+                <div class="clearfix"><button class="btn btn-primary float-end" type="button">Older Posts&nbsp;⇒</button></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
