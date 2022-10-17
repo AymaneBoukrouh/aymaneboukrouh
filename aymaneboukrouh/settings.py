@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-6dib338qviab*3n=9a&)6hums!)ke*@ihpu3#&%=+5rqq@t*nw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["aymaneboukrouh.com"]
 
@@ -125,4 +125,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CSRF_TRUSTED_ORIGINS=['https://www.aymaneboukrouh.com', 'http://aymaneboukrouh.com']
+CSRF_TRUSTED_ORIGINS=['https://www.aymaneboukrouh.com', 'https://aymaneboukrouh.com']
