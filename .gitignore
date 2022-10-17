@@ -9,8 +9,9 @@ __pycache__/
 .vscode/
 .idea/
 
-# db
+# project
 db.sqlite3
+static/
 
 # docker
 docker-compose.yml
