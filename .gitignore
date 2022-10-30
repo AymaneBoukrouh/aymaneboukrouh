@@ -15,3 +15,6 @@ static/
 
 # docker
 docker-compose.yml
+
+# node
+node_modules/

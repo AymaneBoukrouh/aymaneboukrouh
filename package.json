@@ -1,0 +1,23 @@
+{
+  "name": "aymaneboukrouh",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AymaneBoukrouh/aymaneboukrouh.git"
+  },
+  "author": "Aymane Boukrouh",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AymaneBoukrouh/aymaneboukrouh/issues"
+  },
+  "homepage": "https://github.com/AymaneBoukrouh/aymaneboukrouh#readme",
+  "dependencies": {
+    "bootstrap": "^5.2.2",
+    "bootstrap-icons": "^1.9.1"
+  }
+}
