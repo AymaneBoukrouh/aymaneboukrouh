@@ -24,21 +24,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-6dib338qviab*3n=9a&)6hums!)ke*@ihpu3#&%=+5rqq@t*nw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["aymaneboukrouh.com"]
+ALLOWED_HOSTS = ["aymaneboukrouh.com", "localhost"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'blog.apps.BlogConfig',
+    'home.apps.HomeConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'compressor',
 ]
 
 MIDDLEWARE = [
@@ -120,9 +122,26 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+)
+
+STATICFILES_DIRS = (
+    ('node_modules', os.path.join(BASE_DIR, 'node_modules')),
+)
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_TRUSTED_ORIGINS=['https://www.aymaneboukrouh.com', 'https://aymaneboukrouh.com']
+
+
+## Compressor settings
+COMPRESS_ENABLED = True
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'django_libsass.SassCompiler'),
+)

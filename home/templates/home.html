@@ -1,0 +1,151 @@
+{% load static %}
+{% load compress %}
+{% load replace %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ data.name }}</title>
+  {% compress css %}
+  <link type="text/x-scss" rel="stylesheet" href="{% static 'scss/main.scss' %}" />
+  {% endcompress %}
+  <link rel="stylesheet" href="{% static '/node_modules/bootstrap-icons/font/bootstrap-icons.css' %}" />
+</head>
+<body>
+  <div class="container-fluid d-lg-flex flex-row p-0">
+    <nav class="navbar navbar-dark sticky-top d-flex flex-column align-items-center p-5" id="navbar">
+      <div class="info-box">
+        <div class="text-center"><img class="img-fluid rounded-circle mb-5" id="profile-picture" src="{% static '/img/profile-picture.jpg' %}"></div>
+        <h3 class="text-nowrap text-center text-light mb-5"><strong>{{ data.name }}</strong></h3>
+        <ul class="d-flex flex-row justify-content-center gap-2 list-unstyled hover-transition mb-5">
+          {% for social_media in data.social_medias %}
+            <li>
+              <a class="btn rounded-circle text-light" href="{{ social_media.url|urlencode }}" target="_blank">
+                <i class="{{ social_media.icon }}"></i>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+        <div class="container d-none d-lg-block">
+          <ul class="navbar-nav d-flex flex-column gap-2">
+            {% for section in data.sections %}
+            <li class="nav-item d-flex">
+              <a href="#{{ section.title|lower|replace }}" class="d-flex align-items-center nav-link pe-none">
+                <i class="{{ section.icon }} me-3" style="font-size: 24px;"></i>
+                <span>{{ section.title }}</span>
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="main-container container-fluid p-0" data-bs-spy="scroll" data-bs-target="#navbar">
+      <section class="d-flex flex-row align-items-center" id="profile">
+        <div class="container">
+          <div class="display-3 text-light"><strong>{{ data.name }}</strong></div>
+          <div class="display-4 text-light">{{ data.profession }}</div>
+        </div>
+      </section>
+      <section class="bg-white" id="about">
+        <div class="container py-5">
+          <h1 class="mb-3"><span class="border-bottom border-info border-2">About</span></h1>
+          <p style="font-size: 22px;">
+            {{ data.about }}
+          </p>
+          <span style="font-size: 22px;">
+            {{ data.about_technologies }}
+            <table>
+            {% for technology in data.technologies %}
+              <tr>
+                <th>{{ technology.title }}</th>
+                <td>{% for element in technology.elements %}<div class="badge bg-light text-dark me-1">{{ element }}</div>{% endfor %}</td>
+              </tr>
+              {% endfor %}
+            </table>
+          </span>
+        </div>
+      </section>
+      <section class="bg-light" id="services">
+        <div class="container py-5">
+          <h1 class="mb-3"><span class="border-bottom border-info border-2">Services</span></h1>
+          <div class="row row-cols-1 row-cols-md-2">
+          {% for service in services %}
+            <div class="col mb-3">
+                <div class="mb-2" style="font-size: 22px;">
+                    <i class="bi-chevron-right text-info me-2" style="-webkit-text-stroke: 1px;"></i>
+                    {{ service.title }}
+                </div>
+            </div>
+          {% endfor %}
+        </div>
+      </section>
+      <section class="bg-white" id="projects">
+        <div class="container py-5">
+          <h1 class="mb-3"><span class="border-bottom border-info border-2">Projects</span></h1>
+          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+          {% for project in projects %}
+            <div class="col mb-3">
+                <div class="project d-flex flex-column justify-content-between border rounded-1 bg-white p-3 h-100">
+                    <div>
+                        <div class="d-flex flex-row justify-content-between">
+                            <h4>{{ project.title }}</h4>
+                        <div class="d-flex flex-row gap-2">
+                        {% for link in project.links %}
+                            <span><a class="link-info" href="{{ link.url }}" target="_blank"><i class="{{ link.icon }}"></i></a></span>
+                        {% endfor %}
+                        </div>
+                      </div>
+                    <p class="text-muted">{{ project.description }}</p>
+                    </div>
+                    <div>
+                        <div class="d-flex flex-row gap-2 mb-3">
+                        {% for technology in project.technologies %}
+                            <a class="link-info text-decoration-none" href="">{{ technology }}</a>
+                        {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+          {% endfor %}
+        </div>
+      </section>
+      <section class="bg-light" id="contact-me">
+        <div class="container py-5">
+          <h1 class="mb-3"><span class="border-bottom border-info border-2">Contact Me</span></h1>
+          <div class="d-flex justify-content-center">
+            <div class="w-100">
+                <form>
+                    <div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <input class="form-control rounded-0" type="text" placeholder="First Name">
+                            </div>
+                        <div class="col-md-6 mb-3">
+                            <input class="form-control rounded-0" type="text" placeholder="Last Name">
+                        </div>
+                        </div>
+                        <div class="mb-3">
+                            <input class="form-control rounded-0" type="text" placeholder="E-Mail">
+                        </div>
+                        <div class="mb-3">
+                            <input class="form-control rounded-0" type="text" placeholder="Subject">
+                        </div>
+                        <div class="mb-3">
+                            <textarea class="form-control rounded-0" rows="15" style="resize: none;"></textarea>
+                        </div>
+                        <div class="text-center">
+                            <input class="btn btn-info px-5" type="submit" value="Send" disabled>
+                        </div>
+                    </div>
+                </form>    
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</body>
+</html>
