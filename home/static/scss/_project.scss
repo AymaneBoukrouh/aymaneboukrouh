@@ -1,0 +1,9 @@
+.project {
+  border-color: rgba(0, 0, 0, .05);
+  transition: transform .5s, box-shadow .5s;
+}
+
+.project:hover {
+  transform: translateY(-5px);
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, .1);
+}

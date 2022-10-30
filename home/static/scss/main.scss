@@ -1,0 +1,62 @@
+@import "bootstrap";
+
+#navbar {
+  height: 100vh;
+  background-color: #001;
+}
+
+#navbar-toggle {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1;
+  background: none;
+  font-size: 1.5rem;
+}
+
+.active > i {
+  color: $info;
+}
+
+.hover-transition > li > a:hover {
+  background-color: $info;
+  color: $dark;
+  border-color: $dark;
+  transition: background-color 1s, color 1s;
+}
+
+.main-container {
+  background-image: url('/static/img/home-bg.jpg');
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+#profile-picture {
+  width: 150px;
+}
+
+#profile {
+  height: 100vh;
+}
+
+th, td {
+  font-size: 22px;
+}
+
+th {
+  padding-right: 30px;
+}
+
+@include media-breakpoint-down(lg) {
+  #navbar {
+    position: static;
+    height: auto;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+  }
+}
+
+//@import 'project';

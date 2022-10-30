@@ -11,7 +11,7 @@ __pycache__/
 
 # project
 db.sqlite3
-static/
+/static/
 
 # docker
 docker-compose.yml
