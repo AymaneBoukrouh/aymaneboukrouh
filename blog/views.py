@@ -3,7 +3,7 @@ from blog.models import Post
 
 def home(request):
     posts = Post.objects.all()
-    return render(request, 'home.html', {'posts': posts})
+    return render(request, 'blog.html', {'posts': posts})
 
 def about(request):
     return render(request, 'about.html')
