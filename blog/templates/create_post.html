@@ -1,0 +1,49 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block body %}
+    <header class="masthead" style="background-image:url('{% static 'img/contact-bg.jpg' %}');">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 mx-auto position-relative">
+                    <div class="site-heading">
+                        <h1>New Post</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-lg-8 mx-auto">
+                <form method="POST">
+                    <!--<div class="control-group">
+                        <div class="form-floating controls mb-3"><input class="form-control" type="text" id="name" required="" placeholder="Title"><label class="form-label" for="name">Name</label><small class="form-text text-danger help-block"></small></div>
+                    </div>
+                    <div class="control-group">
+                        <div class="form-floating controls mb-3"><textarea class="form-control" id="message" data-validation-required-message="Please enter a message." required="" placeholder="Message" style="height: 150px;"></textarea><label class="form-label">Content</label><small class="form-text text-danger help-block"></small></div>
+                    </div>
+                    <div id="success"></div>-->
+                    {% csrf_token %}
+                    <div class="control-group">
+                        <div class="form-floating controls mb-3">
+                            <!--<input class="form-control" type="text" id="name" required="" placeholder="Title">-->
+                            {% render_field form.title class="form-control" placeholder="Title" %}
+                            <label class="form-label" for="{{ form.title.id_for_label }}">{{ form.title.label }}</label><small class="form-text text-danger help-block"></small>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="form-floating controls mb-3">
+                            {% render_field form.content class="form-control" placeholder=form.content.label style="height: 150px" %}
+                            <label class="form-label" for="{{ form.content.id_for_label }}">{{ form.content.label }}</label><small class="form-text text-danger help-block"></small>
+                        </div>
+                    </div>
+                    <div id="success"></div>
+                    <div class="mb-3"><button class="btn btn-primary" id="sendMessageButton" type="submit">Create</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <hr>
+{% endblock %}
