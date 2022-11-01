@@ -71,9 +71,14 @@ data = {
 }
 
 def home(request):
+    try:
+        bg_home_src = Image.objects.get(name='bg-home').image.url
+    except Image.DoesNotExist:
+        bg_home_src = None
+
     return render(request, 'home.html', {
         'data': data,
         'services': Service.objects.all(),
         'projects': Project.objects.all(),
-        'bg_home_src': Image.objects.get(name='bg-home').image.url
+        'bg_home_src': bg_home_src
     })
