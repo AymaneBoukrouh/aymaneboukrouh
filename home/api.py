@@ -1,6 +1,8 @@
 from django.http import JsonResponse
+from django.contrib.auth.decorators import user_passes_test
 from home.models import Image
 
+@user_passes_test(lambda u: u.is_superuser)
 def bg_home(request):
     if request.method == 'POST':
         try:
@@ -15,6 +17,7 @@ def bg_home(request):
         'status': 'success'
     })
 
+@user_passes_test(lambda u: u.is_superuser)
 def profile_picture(request):
     if request.method == 'POST':
         try:
