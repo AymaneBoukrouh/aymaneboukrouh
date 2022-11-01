@@ -22,7 +22,13 @@
   <div class="container-fluid d-lg-flex flex-row p-0">
     <nav class="navbar navbar-dark sticky-top d-flex flex-column align-items-center p-5" id="navbar">
       <div class="info-box">
-        <div class="text-center"><img class="img-fluid rounded-circle mb-5" id="profile-picture" src="{% static '/img/profile-picture.jpg' %}"></div>
+        <div class="d-flex flex-column justify-content-center align-items-center mb-4">
+          <img class="img-fluid rounded-circle mb-3" id="profile-picture-img" src="{{ profile_picture_src }}">
+          {% if user.is_superuser %}
+          <button class="btn btn-light px-5" id="profile-picture-button">Edit</button>
+          <input class="d-none" type="file" id="profile-picture">
+          {% endif %}
+        </div>
         <h3 class="text-nowrap text-center text-light mb-5"><strong>{{ data.name }}</strong></h3>
         <ul class="d-flex flex-row justify-content-center gap-2 list-unstyled hover-transition mb-5">
           {% for social_media in data.social_medias %}
@@ -180,6 +186,28 @@
           formData.append('bg-home', file);
           formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
           fetch('/api/bg-home', {
+              method: 'POST',
+              body: formData
+          });
+      })
+
+      $('#profile-picture-button').on('click', function () {
+          $('#profile-picture').trigger('click');
+      })
+
+      $('#profile-picture').on('change', function () {
+          var file = this.files[0];
+          var reader = new FileReader();
+          reader.onload = function (e) {
+              $('#profile-picture-img').attr('src', e.target.result);
+          }
+          
+          reader.readAsDataURL(file);
+
+          let formData = new FormData();
+          formData.append('profile-picture', file);
+          formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+          fetch('/api/profile-picture', {
               method: 'POST',
               body: formData
           });

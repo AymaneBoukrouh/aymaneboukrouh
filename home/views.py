@@ -72,6 +72,11 @@ data = {
 
 def home(request):
     try:
+        profile_picture_src = Image.objects.get(name='profile-picture').image.url
+    except Image.DoesNotExist:
+        profile_picture_src = None
+
+    try:
         bg_home_src = Image.objects.get(name='bg-home').image.url
     except Image.DoesNotExist:
         bg_home_src = None
@@ -80,5 +85,6 @@ def home(request):
         'data': data,
         'services': Service.objects.all(),
         'projects': Project.objects.all(),
-        'bg_home_src': bg_home_src
+        'bg_home_src': bg_home_src,
+        'profile_picture_src': profile_picture_src
     })

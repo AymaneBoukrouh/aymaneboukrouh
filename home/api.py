@@ -14,3 +14,17 @@ def bg_home(request):
     return JsonResponse({
         'status': 'success'
     })
+
+def profile_picture(request):
+    if request.method == 'POST':
+        try:
+            image = Image.objects.get(name='profile-picture')
+        except Image.DoesNotExist:
+            image = Image(name='profile-picture')
+        
+        image.image = request.FILES['profile-picture']
+        image.save()
+
+    return JsonResponse({
+        'status': 'success'
+    })
