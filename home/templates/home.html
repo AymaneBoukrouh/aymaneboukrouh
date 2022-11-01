@@ -12,6 +12,11 @@
   <link type="text/x-scss" rel="stylesheet" href="{% static 'scss/main.scss' %}" />
   {% endcompress %}
   <link rel="stylesheet" href="{% static '/node_modules/bootstrap-icons/font/bootstrap-icons.css' %}" />
+  <style>
+    .main-container {
+      background-image: url("{{ bg_home_src }}");
+    }
+  </style>
 </head>
 <body>
   <div class="container-fluid d-lg-flex flex-row p-0">
@@ -44,6 +49,14 @@
     </nav>
     <div class="main-container container-fluid p-0" data-bs-spy="scroll" data-bs-target="#navbar">
       <section class="d-flex flex-row align-items-center" id="profile">
+        {% if user.is_superuser %}
+        <button class="position-absolute top-0 end-0 mx-3 my-3" id="bg-home-button" style="background: none; border: none"><i class="bi-pencil-square text-white h3" style="background: none;"></i></button>
+        <input class="d-none" type="file" id="bg-home">
+        <div class="position-absolute top-0 start-50 mx-3 my-3">
+          <button class="btn" style="background-color: #001 !important; color: white;">Export JSON</button>
+          <button class="btn" style="background-color: #001 !important; color: white;">Import JSON</button>
+        </div>
+        {% endif %}
         <div class="container">
           <div class="display-3 text-light"><strong>{{ data.name }}</strong></div>
           <div class="display-4 text-light">{{ data.profession }}</div>
@@ -147,5 +160,30 @@
       </section>
     </div>
   </div>
+  <script src="{% static 'node_modules/jquery/dist/jquery.js' %}"></script>
+  <!--<script src="{% static 'js/main.js' %}"></script>-->
+  <script>
+    $('#bg-home-button').on('click', function () {
+      $('#bg-home').trigger('click');
+      })
+
+      $('#bg-home').on('change', function () {
+          var file = this.files[0];
+          var reader = new FileReader();
+          reader.onload = function (e) {
+              $('.main-container').css('background-image', 'url(' + e.target.result + ')');
+          }
+          
+          reader.readAsDataURL(file);
+
+          let formData = new FormData();
+          formData.append('bg-home', file);
+          formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+          fetch('/api/bg-home', {
+              method: 'POST',
+              body: formData
+          });
+      })
+  </script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from home.models import Service, Project
+from home.models import Service, Project, Image
 
 data = {
   "name": "Aymane Boukrouh",
@@ -75,4 +75,5 @@ def home(request):
         'data': data,
         'services': Service.objects.all(),
         'projects': Project.objects.all(),
+        'bg_home_src': Image.objects.get(name='bg-home').image.url
     })
