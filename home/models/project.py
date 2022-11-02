@@ -1,13 +1,5 @@
 from django.db import models
 
-class Service(models.Model):
-    id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.title
-
-# Project
 
 class Project(models.Model):
     id = models.AutoField(primary_key=True)
@@ -37,10 +29,3 @@ class ProjectTechnology(models.Model):
 
     def __str__(self):
         return f"{self.project.title} - {self.technology.name}"
-
-# Image
-
-class Image(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='static/images')
