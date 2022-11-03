@@ -5,4 +5,5 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('api/bg-home', api.bg_home, name='bg-home'),
     path('api/profile-picture', api.profile_picture, name='profile-picture'),
+    path('api/import-json', api.import_json, name='import-json')
 ]

@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="{% static '/node_modules/bootstrap-icons/font/bootstrap-icons.css' %}" />
   <style>
     .main-container {
-      background-image: url("{{ bg_home_src }}");
+      background-image: url("{{ data.bg_home_src }}");
     }
   </style>
 </head>
@@ -24,13 +24,13 @@
     <nav class="navbar navbar-dark sticky-top d-flex flex-column align-items-center p-5" id="navbar">
       <div class="info-box">
         <div class="d-flex flex-column justify-content-center align-items-center mb-4">
-          <img class="img-fluid rounded-circle mb-3" id="profile-picture-img" src="{{ profile_picture_src }}">
+          <img class="img-fluid rounded-circle mb-3" id="profile-picture-img" src="{{ data.profile_picture_src }}">
           {% if user.is_superuser %}
           <button class="btn btn-light px-5" id="profile-picture-button">Edit</button>
           <input class="d-none" type="file" id="profile-picture">
           {% endif %}
         </div>
-        <h3 class="text-nowrap text-center text-light mb-5"><strong>{{ data.name }}</strong></h3>
+        <h3 class="text-nowrap text-center text-light mb-5"><strong>{{ data.info.fullname }}</strong></h3>
         <ul class="d-flex flex-row justify-content-center gap-2 list-unstyled hover-transition mb-5">
           {% for social_media in data.social_medias %}
             <li>
@@ -60,27 +60,28 @@
         <button class="position-absolute top-0 end-0 mx-3 my-3" id="bg-home-button" style="background: none; border: none"><i class="bi-pencil-square text-white h3" style="background: none;"></i></button>
         <input class="d-none" type="file" id="bg-home">
         <div class="position-absolute top-0 start-50 mx-3 my-3">
-          <button class="btn" style="background-color: #001 !important; color: white;">Export JSON</button>
-          <button class="btn" style="background-color: #001 !important; color: white;">Import JSON</button>
+          <button class="btn" id="import-json" style="background-color: #001 !important; color: white;">Import JSON</button>
+          <input class="d-none" type="file" id="json-file">
+          <button class="btn" id="export-json" style="background-color: #001 !important; color: white;">Export JSON</button>
         </div>
         {% endif %}
         <div class="container">
-          <div class="display-3 text-light"><strong>{{ data.name }}</strong></div>
-          <div class="display-4 text-light">{{ data.profession }}</div>
+          <div class="display-3 text-light"><strong>{{ data.info.fullname }}</strong></div>
+          <div class="display-4 text-light">{{ data.info.profession }}</div>
         </div>
       </section>
       <section class="bg-white" id="about">
         <div class="container py-5">
           <h1 class="mb-3"><span class="border-bottom border-info border-2">About</span></h1>
           <p style="font-size: 22px;">
-            {{ data.about }}
+            {{ data.info.about }}
           </p>
           <span style="font-size: 22px;">
-            {{ data.about_technologies }}
+            {{ data.info.about_technologies }}
             <table>
             {% for technology in data.technologies %}
               <tr>
-                <th>{{ technology.title }}</th>
+                <th>{{ technology.name }}</th>
                 <td>{% for element in technology.elements %}<div class="badge bg-light text-dark me-1">{{ element }}</div>{% endfor %}</td>
               </tr>
               {% endfor %}
@@ -92,7 +93,7 @@
         <div class="container py-5">
           <h1 class="mb-3"><span class="border-bottom border-info border-2">Services</span></h1>
           <div class="row row-cols-1 row-cols-md-2">
-          {% for service in services %}
+          {% for service in data.services %}
             <div class="col mb-3">
                 <div class="mb-2" style="font-size: 22px;">
                     <i class="bi-chevron-right text-info me-2" style="-webkit-text-stroke: 1px;"></i>
@@ -106,7 +107,7 @@
         <div class="container py-5">
           <h1 class="mb-3"><span class="border-bottom border-info border-2">Projects</span></h1>
           <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
-          {% for project in projects %}
+          {% for project in data.projects %}
             <div class="col mb-3">
                 <div class="project d-flex flex-column justify-content-between border rounded-1 bg-white p-3 h-100">
                     <div>
@@ -171,9 +172,22 @@
   <script src="{% static 'node_modules/jquery/dist/jquery.js' %}"></script>
   <!--<script src="{% static 'js/main.js' %}"></script>-->
   <script>
+    function download(content, fileName, contentType) {
+      const a = document.createElement("a");
+      const file = new Blob([content], { type: contentType });
+      a.href = URL.createObjectURL(file);
+      a.download = fileName;
+      a.click();
+    }
+
+    function export_data (data) {
+      download(JSON.stringify(data), "aymaneboukrouh.com.json", "text/plain");
+    }
+
+
     $('#bg-home-button').on('click', function () {
       $('#bg-home').trigger('click');
-      })
+    })
 
       $('#bg-home').on('change', function () {
           var file = this.files[0];
@@ -213,6 +227,33 @@
               method: 'POST',
               body: formData
           });
+      })
+
+      $('#import-json').on('click', function () {
+          $('#json-file').trigger('click');
+      })
+
+      $('#json-file').on('change', function () {
+          var file = this.files[0];
+          var reader = new FileReader();
+          reader.onload = function(e) {
+              // TODO: update data
+          }
+
+          reader.readAsText(file);
+
+          let formData = new FormData();
+          formData.append('json-file', file);
+          formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+          fetch('/api/import-json', {
+              method: 'POST',
+              body: formData
+          });
+      })
+
+      $('#export-json').on('click', function () {
+          export_data({{ data|safe }});
+          window.location.reload();
       })
   </script>
 </body>
