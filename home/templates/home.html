@@ -79,10 +79,10 @@
           <span style="font-size: 22px;">
             {{ data.info.about_technologies }}
             <table>
-            {% for technology in data.technologies %}
+            {% for field in data.fields %}
               <tr>
-                <th>{{ technology.name }}</th>
-                <td>{% for element in technology.elements %}<div class="badge bg-light text-dark me-1">{{ element }}</div>{% endfor %}</td>
+                <th>{{ field.name }}</th>
+                <td>{% for technology in field.technologies %}<div class="badge bg-light text-dark me-1">{{ technology }}</div>{% endfor %}</td>
               </tr>
               {% endfor %}
             </table>

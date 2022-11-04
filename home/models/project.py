@@ -1,4 +1,5 @@
 from django.db import models
+from home.models.technology import Technology
 
 
 class Project(models.Model):
@@ -13,9 +14,6 @@ class Project(models.Model):
     @property
     def links(self):
         return [pl.serialize() for pl in ProjectLink.objects.filter(project=self)]
-
-    def __str__(self):
-        return self.title
     
     def serialize(self):
         return {
@@ -25,34 +23,9 @@ class Project(models.Model):
             'links': self.links
         }
 
-
-class TechnologyField(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255)
-
-    @property
-    def elements(self):
-        return [ft.technology.name for ft in FieldTechnology.objects.filter(field=self)]
-    
-    def serialize(self):
-        return {
-            'name': self.name,
-            'elements': self.elements
-        }
-
-
-class Technology(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255)
-
     def __str__(self):
-        return self.name
+        return self.title
 
-
-class FieldTechnology(models.Model):
-    id = models.AutoField(primary_key=True)
-    field = models.ForeignKey(TechnologyField, on_delete=models.CASCADE)
-    technology = models.ForeignKey(Technology, on_delete=models.CASCADE)
 
 class ProjectTechnology(models.Model):
     id = models.AutoField(primary_key=True)
@@ -61,6 +34,7 @@ class ProjectTechnology(models.Model):
 
     def __str__(self):
         return f"{self.project.title} - {self.technology.name}"
+
 
 class ProjectLink(models.Model):
     id = models.AutoField(primary_key=True)

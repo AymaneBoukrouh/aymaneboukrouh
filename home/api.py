@@ -1,139 +1,38 @@
 from django.http import JsonResponse
 from django.contrib.auth.decorators import user_passes_test
-from home.models import *
+from django.apps import apps
+from home.models import Image
+from home.utils.data import *
 import json
 
 @user_passes_test(lambda u: u.is_superuser)
 def bg_home(request):
-    if request.method == 'POST':
-        try:
-            image = Image.objects.get(name='bg-home')
-        except Image.DoesNotExist:
-            image = Image(name='bg-home')
-        
-        image.image = request.FILES['bg-home']
-        image.save()
-
-    return JsonResponse({
-        'status': 'success'
-    })
+    return update_image(request, 'bg-home')
 
 @user_passes_test(lambda u: u.is_superuser)
 def profile_picture(request):
-    if request.method == 'POST':
-        try:
-            image = Image.objects.get(name='profile-picture')
-        except Image.DoesNotExist:
-            image = Image(name='profile-picture')
-        
-        image.image = request.FILES['profile-picture']
-        image.save()
-
-    return JsonResponse({
-        'status': 'success'
-    })
+    return update_image(request, 'profile-picture')
 
 @user_passes_test(lambda u: u.is_superuser)
 def import_json(request):
-    # TODO: clear all data before importing
+    # check request method
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Only POST requests are allowed.'}, status=400)
+ 
+    # read data
+    data = json.load(request.FILES['json-file'])
 
-    if request.method == 'POST':
-        json_file = request.FILES['json-file']
-        data = json.load(json_file)
+    # clear previous data
+    for model in apps.get_app_config('home').get_models():
+        if model != Image:
+            model.objects.all().delete()
 
-        for key, value in data['info'].items():
-            try:
-                info = Info.objects.get(name=key)
-            except Info.DoesNotExist:
-                info = Info(name=key)
-            
-            info.value = value
-            info.save()
+    # import data
+    import_info(data['info'])
+    import_services(data['services'])
+    import_sections(data['sections'])
+    import_social_medias(data['social_medias'])
+    import_fields(data['fields'])
+    import_projects(data['projects'])
 
-        for service in data['services']:
-            try:
-                service_ = Service.objects.get(title=service['title'])
-            except Service.DoesNotExist:
-                service_ = Service(title=service['title'])
-
-            service_.save()
-
-        for section in data['sections']:
-            try:
-                section_ = Section.objects.get(title=section['title'])
-            except Section.DoesNotExist:
-                section_ = Section(title=section['title'])
-
-            section_.icon = section['icon']
-            section_.save()   
-
-        for social_media in data['social_medias']:
-            try:
-                social_media_ = SocialMedia.objects.get(name=social_media['name'])
-            except SocialMedia.DoesNotExist:
-                social_media_ = SocialMedia(name=social_media['name'])
-
-            social_media_.url = social_media['url']
-            social_media_.icon = social_media['icon']
-            social_media_.save() 
-
-        for technology in data['technologies']:
-            try:
-                technology_ = TechnologyField.objects.get(name=technology['name'])
-            except TechnologyField.DoesNotExist:
-                technology_ = TechnologyField(name=technology['name'])
-
-            technology_.save()
-            
-            for element in technology['elements']:
-                try:
-                    element_ = Technology.objects.get(name=element)
-                except Technology.DoesNotExist:
-                    element_ = Technology(name=element)
-
-                element_.save()
-            
-                try:
-                    field_technology = FieldTechnology.objects.get(technology=element_, field=technology_)
-                except FieldTechnology.DoesNotExist:
-                    field_technology = FieldTechnology(technology=element_, field=technology_)
-                    field_technology.save()
-
-
-        for project in data['projects']:
-            try:
-                project_ = Project.objects.get(title=project['title'])
-            except Project.DoesNotExist:
-                project_ = Project(title=project['title'])
-
-            project_.description = project['description']
-            project_.save()
-
-            for link in project['links']:
-                try:
-                    link_ = ProjectLink.objects.get(icon=link['icon'], project=project_)
-                except ProjectLink.DoesNotExist:
-                    link_ = ProjectLink(icon=link['icon'], project=project_)
-                
-                link_.url = link['url']
-                link_.icon = link['icon']
-                link_.project = project_
-                link_.save()
-
-            for technology in project['technologies']:
-                try:
-                    technology_ = Technology.objects.get(name=technology)
-                except Technology.DoesNotExist:
-                    technology_ = Technology(name=technology)
-                
-                technology_.save()
-
-                try:
-                    project_technology = ProjectTechnology.objects.get(project=project_, technology=technology_)
-                except ProjectTechnology.DoesNotExist:
-                    project_technology = ProjectTechnology(project=project_, technology=technology_)
-                    project_technology.save()
-
-        return JsonResponse({
-            'status': 'success'
-        })
+    return JsonResponse({'status': 'success'})

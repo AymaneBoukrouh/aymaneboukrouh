@@ -1,26 +1,18 @@
 from django.shortcuts import render
+from django.db import models
+from home.utils import serialized_objects, try_get_image
 from home.models import *
 
 def home(request):
-    try:
-        profile_picture_src = Image.objects.get(name='profile-picture').image.url
-    except Image.DoesNotExist:
-        profile_picture_src = None
-
-    try:
-        bg_home_src = Image.objects.get(name='bg-home').image.url
-    except Image.DoesNotExist:
-        bg_home_src = None
-
     return render(request, 'home.html', {
         'data': {
           'info': {info.name: info.value for info in Info.objects.all()},
-          'technologies': [tf.serialize() for tf in TechnologyField.objects.all()],
-          'social_medias': [social_media.serialize() for social_media in SocialMedia.objects.all()],
-          'sections': [section.serialize() for section in Section.objects.all()],
-          'services': [service.serialize() for service in Service.objects.all()],
-          'projects': [project.serialize() for project in Project.objects.all()],
-          'bg_home_src': bg_home_src,
-          'profile_picture_src': profile_picture_src
+          'fields': serialized_objects(Field),
+          'social_medias': serialized_objects(SocialMedia),
+          'sections': serialized_objects(Section),
+          'services': serialized_objects(Service),
+          'projects': serialized_objects(Project),
+          'bg_home_src': try_get_image('bg-home'),
+          'profile_picture_src': try_get_image('profile-picture')
         }
    })

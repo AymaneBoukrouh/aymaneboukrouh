@@ -4,3 +4,4 @@ from home.models.project import *
 from home.models.section import *
 from home.models.service import *
 from home.models.social import *
+from home.models.technology import *
