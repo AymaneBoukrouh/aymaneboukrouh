@@ -34,7 +34,7 @@
         <ul class="d-flex flex-row justify-content-center gap-2 list-unstyled hover-transition mb-5">
           {% for social_media in data.social_medias %}
             <li>
-              <a class="btn rounded-circle text-light" href="{{ social_media.url|urlencode }}" target="_blank">
+              <a class="btn rounded-circle text-light" href="{{ social_media.url }}" target="_blank">
                 <i class="{{ social_media.icon }}"></i>
               </a>
             </li>
