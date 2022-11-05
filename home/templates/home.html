@@ -231,7 +231,6 @@
 
       $('#import-json').on('click', function () {
           $('#json-file').trigger('click');
-          window.location.reload();
       })
 
       $('#json-file').on('change', function () {
@@ -250,6 +249,8 @@
               method: 'POST',
               body: formData
           });
+
+          window.location.reload();
       })
 
       $('#export-json').on('click', function () {
