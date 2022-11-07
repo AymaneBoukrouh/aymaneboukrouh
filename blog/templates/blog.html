@@ -18,14 +18,15 @@
             <div class="col-md-10 col-lg-8">
                 {% for post in posts %}
                 {% if not forloop.first %}<hr>{% endif %}
-                <div class="post-preview"><a href="#">
+                <div class="post-preview">
+                    <a href="{% url 'post' id=post.id %}">
                         <h2 class="post-title">{{ post.title }}</h2>
                     </a>
                     <p class="post-meta">
                         Posted on {{ post.created_at|date:'F d, Y' }}
                         {% if post.updated_at|date:'F d, Y' != post.created_at|date:'F d, Y' %}
                         <br>Last updated on {{ post.updated_at }}
-                        {% endif %}
+                        {% endif %} 
                     </p>
                 </div>
                 {% endfor %}
