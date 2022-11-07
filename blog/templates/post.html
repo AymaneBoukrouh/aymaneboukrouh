@@ -23,10 +23,14 @@
     <article>
         <div class="container">
             <div class="row">
-                <div class="col-md-10 col-lg-8 mx-auto">
-                    {{ post.content }}
-                </div>
+                <div class="col-md-10 col-lg-8 mx-auto" id="post-content"></div>
             </div>
         </div>
     </article>
+    <script src="{% static 'node_modules/showdown/dist/showdown.js' %}"></script>
+    <script>
+        var converter = new showdown.Converter();
+        var html = converter.makeHtml(`{{ post.content|escapejs }}`);
+        document.getElementById('post-content').innerHTML = html;
+    </script>
 {% endblock %}
